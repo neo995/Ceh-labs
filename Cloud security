@@ -1,0 +1,26 @@
+git clone https://github.com/nahamsec/lazys3.git
+cd lazys3
+ruby lazys3.rb pakwheels
+pakwheels.s3.amazonaws.com
+ruby lazys3.rb flaws.cloud
+flaws.cloud.s3.amazonaws.com
+ruby lazys3.rb certifiedhacker
+https://certifiedhacker.s3.amazonaws.com/
+
+apt install cloud-enum
+cloud_enum -h
+cloud_enum -k certifiedhacker --disable-azure --disable-gcp
+
+Chrome extensions:
+https://github.com/AlecBlance/S3BucketList
+Download zip
+extract
+go to chrome--> more tools--> load unpacked-->select the folder and pin it
+
+apt-get update
+apt-get install awscli
+cloud_enum -k flaws.cloud --disable-azure --disable-gcp
+
+aws s3 ls s3://flaws.cloud/ --no-sign-request
+aws s3 cp s3://flaws.cloud/secret-dd02c7c.html . --no-sign-request
+cat secret-dd02c7c.html
