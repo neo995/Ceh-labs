@@ -1,0 +1,70 @@
+Directory Busting & VHOST enumeration
+Directory busting --> find directories and pages of a website
+VHOST enumeration--> find subdomains of website
+Tools: Gobuster,FFUF
+
+gobuster dir -u https://hostgator.in -w /opt/pentest/tools/SecLists-master/Discovery/Web-Content/Common-DB-Backups.txt -x .html,.css,.js
+
+ffuf -u https://hostgator.in/FUZZ -w /opt/pentest/tools/SecLists-master/Discovery/Web-Content/Common-DB-Backups.txt -e .html,.css,.js
+
+gobuster vhost -u https://hostgator.in -w /opt/pentest/tools/SecLists-master/Discovery/DNS/bug-bounty-program-subdomains-trickest-inventory.txt --append-domain
+
+ffuf -u https://hostgator.in -w /opt/pentest/tools/SecLists-master/Discovery/DNS/bug-bounty-program-subdomains-trickest-inventory.txt -H "HOST:FUZZ.hostgator.in"
+
+ffuf -u https://hostgator.in -w /opt/pentest/tools/SecLists-master/Discovery/DNS/bug-bounty-program-subdomains-trickest-inventory.txt -H "HOST:FUZZ.hostgator.in" -fw 205
+
+Digital certificates:
+https://crt.sh/
+https://censys.io/
+https://ui.ctsearch.entrust.com/ui/ctsearchui
+
+DNS enum:
+dig hostgator.in
+dig ns hostgator.in
+dig mx hostgator.in
+
+host hostgator.in
+host -t ns hostgator.in
+host -t mx hostgator.in
+host -t cname hostgator.in
+
+nslookup hostgator.in
+nslookup
+> set TYPE=ns
+> hostgator.in
+> set type=txt
+> hostgator.in
+
+ZONE transfer
+host -t ns hostgator.in
+host -l hostgator.in dora.ns.cloudflare.com
+dig axfr hostgator.in @dora.ns.cloudflare.com
+nslookup
+set type=ns
+zonetransfer.me
+server nsztm1.digi.ninja
+set type=any
+zonetransfer.me
+ls -d zonetransfer.me
+
+Zonetransfer using automated tool
+dnsrecon -d zonetransfer.me -t axfr
+dnsenum zonetransfer.me
+fierce --domain zonetransfer.me
+
+Service Enumeration:
+netdiscover -i ens33
+nmap -sn 192.168.54.1/24
+nmap -sn -PR 192.168.54.1-155
+nmap -sV 192.168.54.131 -sS
+nmap -sS 192.168.54.131 -O
+go to https://nmap.org/nsedoc/scripts/
+click on scripts
+cd /usr/share/nmap/scripts
+sudo nmap -sU -sS --script smb-os-discovery.nse -p U:137,T:139 192.168.54.131
+nmap --script smb-os-discovery.nse -p445 192.168.54.131
+
+nmap -sS -A -p445 192.168.54.131
+nmap -sU --script nbstat.nse -p137 192.168.54.131
+nmap --script smb-enum-users.nse -p445 192.168.54.131 
+enum4linux -a 192.168.54.131
