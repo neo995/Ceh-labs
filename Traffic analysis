@@ -1,0 +1,3 @@
+Traffic analysis:
+tcp.flags.syn == 1 and tcp.flags.ack== 0
+tcp.flags.syn == 1
