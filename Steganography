@@ -1,0 +1,16 @@
+Steganography:
+covert-tcp:
+wget https://github.com/Ashraful-alim/CEH-Practical-Notes/blob/main/covert_tcp.c
+sudo apt install gcc
+cc ‐o covert_tcp covert_tcp.c
+sudo ./covert_tcp ‐dest 192.168.18.144 ‐source 192.168.18.95 ‐source_port 8888 ‐dest_port 9999 ‐server ‐file /home/user/msg1.txt    [start listener on parrot]
+
+sudo ./covert_tcp ‐dest 192.168.18.144 ‐source 192.168.18.95 ‐source_port 9999 ‐dest_port 8888 ‐file /home/kali/msg.txt    [send from kali]
+
+SNOW.EXE -C -m "You can pass" -p "pa$$word" Secret.txt Hiddensecret.txt    [for hiding]
+SNOW.EXE -C  -p "pa$$word"  Hiddensecret.txt    [for revealing]
+
+sametool in linux:
+apt install stegsnow
+stegsnow -C -m "secret file" -p "password" secret.txt hiddensecret.txt    [for hiding a message]
+stegsnow -C -p "password"  hiddensecret.txt    [for revealing]
